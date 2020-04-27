@@ -1,0 +1,42 @@
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="repository://schemas/env-config.xsd">
+	<environment>
+		<services>
+			<!--<>http://c00000009165.pharos.intuit.com/prs/v2</>
+			<>http://metro2a.star.dev.diginsite.com:8280/cbs2/v2</>-->
+			<purchaseRewardsConnectionParams>
+				<proxyHost>atheng04</proxyHost> 
+                <proxyPort>8000</proxyPort>
+                <connectionTimeout>100000</connectionTimeout>
+                <totalConnections>100</totalConnections>
+                <readTimeout>30000</readTimeout>
+                <connectionsPerHost>100</connectionsPerHost>
+			</purchaseRewardsConnectionParams>
+            <!-- The CBS stuff below has to be the same as prAdmin/<version>/config/test/defaults/env-defaults.xml -->
+<!--
+            <cbs2BaseUrl>http://c00000007431.pharos.intuit.com:8889/v2/</cbs2BaseUrl>
+-->
+            <cbs2V2BaseUrl>http://metro2a.star.dev.diginsite.com:8280/cbs2/v2</cbs2V2BaseUrl>
+            <cbs2V2ConnectionParams>
+                <!-- so far not needed during development.  just pasted here from afeCommonConfig. -->
+                <proxyHost>atheng04</proxyHost>
+                <proxyPort>8000</proxyPort>
+                <connectionTimeout>10000</connectionTimeout>
+                <totalConnections>600</totalConnections>
+                <readTimeout>150000</readTimeout>
+                <connectionsPerHost>600</connectionsPerHost>
+            </cbs2V2ConnectionParams>
+
+            <toolsGatewayUrl>http://pdevtldos100.corp.intuit.net:8080/</toolsGatewayUrl>
+            <toolsConnectionParams>
+                <proxyHost>atheng04</proxyHost>
+                <proxyPort>8000</proxyPort>
+                <connectionTimeout>30000</connectionTimeout>
+                <totalConnections>100</totalConnections>
+                <readTimeout>100000</readTimeout>
+                <connectionsPerHost>100</connectionsPerHost>
+            </toolsConnectionParams>
+
+		</services>
+	</environment>
+</configuration>

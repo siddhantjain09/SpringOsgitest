@@ -1,0 +1,42 @@
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="repository://schemas/env-config.xsd">
+
+    <AdminPlatform>
+        <!-- COMMON COMPONENTS REST CLIENT CONFIGURATIONS -->
+        <restClients>
+            <purchaseRewardsServicesProxyEnabled>false</purchaseRewardsServicesProxyEnabled>
+            <cbsServicesProxyEnabled>false</cbsServicesProxyEnabled>
+            <qbProxyEnabled>false</qbProxyEnabled>
+            <loggingServicesProxyEnabled>false</loggingServicesProxyEnabled>
+
+            <security>
+                <filter>
+                    <headerName>DI-SSL-ClientCert</headerName>
+                    <headerValue>PR-Admin-1.0.0</headerValue>
+                    <auth>prstestclient</auth>
+                    <app>SHARED_ADMIN</app>
+                    <offering>IB</offering>
+                </filter>
+            </security>
+            <commonBankingServices>
+                <headerAuthorization>cbs2testclient</headerAuthorization>
+                <customerInfo>fis/{DIID}/fiCustomers/{CUSTOMER_ID}?fiCustomerIdType={TYPE}</customerInfo>
+                <financialInstitution>fis/{DIID}</financialInstitution>
+                <resetPassword>fis/{DIID}/fiCustomers/{CUSTOMER_ID}?method=resetPassword&amp;requestId={REQUEST_ID}</resetPassword>
+                <unlockUser>fis/{DIID}/fiCustomers/{CUSTOMER_ID}?method=unlockUser</unlockUser>
+                <resetMfa>fis/{DIID}/fiCustomers/{CUSTOMER_ID}?method=resetMFA</resetMfa>
+                <getFiProducts>fis/{DIID}/product</getFiProducts>
+            </commonBankingServices>
+            <globalLoggingServices>
+                <headerAuthorization>loggingApiTestHeader</headerAuthorization>
+                <getFICustomerAuditData>fis/{fiId}/products/{productId}/fiCustomers/{fiCustomerId}</getFICustomerAuditData>
+            </globalLoggingServices>
+            <toolsServices>
+                <headerAuthorization>gateway2testclient</headerAuthorization>
+                <headerOfferingId>AdminPlatform</headerOfferingId>
+                <headerAppId>AdminPlatform</headerAppId>
+                <getDiIdSlIdRelationUrl>tis/services/network/file</getDiIdSlIdRelationUrl>
+            </toolsServices>
+        </restClients>
+    </AdminPlatform>
+
+</configuration>

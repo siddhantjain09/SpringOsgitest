@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+>
+	<context:annotation-config />
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+	
+	 
+    <bean id="adminPortalAppContextUtils" class="springtoosgi.portlet.AdminPortalHookContextUtils" />
+<!-- 
+    <bean id="adminPortalHookAppConfigBuilder" class="org.apache.commons.configuration.DefaultConfigurationBuilder">
+        <property name="fileName">
+            <value>config/fi-app-config.xml</value>
+        </property>
+        <property name="attributeSplittingDisabled">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <bean id="adminPortalHookAppConfig" class="org.apache.commons.configuration.HierarchicalConfiguration"
+          factory-bean="adminPortalHookAppConfigBuilder" factory-method="getConfiguration"> </bean>
+ -->
+<bean id="osgiShim" class="springtoosgi.portlet.OSGiShim" depends-on="defaultBundleContextFunction">
+<constructor-arg index="0" ref="defaultBundleContextFunction" />
+</bean>
+
+<!-- <bean id="osgiShim" class="springtoosgi.portlet.OSGiShim" />
+ -->
+<bean name="makeService" factory-method="registerService" factory-bean="osgiShim" depends-on="adminPortalAppContextUtils">
+		<constructor-arg index="0" ref="adminPortalAppContextUtils" />
+	</bean>
+ <bean id="defaultBundleContextFunction" class="springtoosgi.portlet.DefaultBundleContextFunction" />
+
+</beans>
