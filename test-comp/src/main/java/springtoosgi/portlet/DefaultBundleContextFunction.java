@@ -26,16 +26,19 @@ public class DefaultBundleContextFunction implements FactoryBean<Function<Class<
 
 	@Override
 	public Function<Class<?>, BundleContext> getObject() throws Exception {
+		System.out.println("in fun");
 		return c -> FrameworkUtil.getBundle(c).getBundleContext();
 	}
 
 	@Override
 	public Class<?> getObjectType() {
+		System.out.println("in getobj");
 		return Function.class;
 	}
 
 	@Override
 	public boolean isSingleton() {
+		System.out.println("in sing");
 		return true;
 	}
 

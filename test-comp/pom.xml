@@ -15,9 +15,9 @@
 	</properties>
 	<dependencies>
 	<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.10.0.LIFERAY-PATCHED-1</version>
+			<groupId>com.liferay</groupId>
+			<artifactId>org.apache.commons.configuration</artifactId>
+			<version>1.10.LIFERAY-PATCHED-2</version>
 		
 				</dependency>
 		
@@ -61,7 +61,22 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>4.2.5.RELEASE</version>
+		
 		</dependency>
+		
+		<dependency>
+			<groupId>test.service.in.spring</groupId>
+			<artifactId>test-service-in-spring-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.liferay/com.liferay.osgi.service.tracker.collections -->
+<dependency>
+    <groupId>com.liferay</groupId>
+    <artifactId>com.liferay.osgi.service.tracker.collections</artifactId>
+    <version>5.0.1</version>
+    <scope>provided</scope>
+</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc-portlet</artifactId>
@@ -102,6 +117,11 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
+		
+     
+			
+			
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.0.0</version>

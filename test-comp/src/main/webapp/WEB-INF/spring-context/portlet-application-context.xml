@@ -15,30 +15,5 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
 	
-	 
-    <bean id="adminPortalAppContextUtils" class="springtoosgi.portlet.AdminPortalHookContextUtils" />
-<!-- 
-    <bean id="adminPortalHookAppConfigBuilder" class="org.apache.commons.configuration.DefaultConfigurationBuilder">
-        <property name="fileName">
-            <value>config/fi-app-config.xml</value>
-        </property>
-        <property name="attributeSplittingDisabled">
-            <value>true</value>
-        </property>
-    </bean>
-
-    <bean id="adminPortalHookAppConfig" class="org.apache.commons.configuration.HierarchicalConfiguration"
-          factory-bean="adminPortalHookAppConfigBuilder" factory-method="getConfiguration"> </bean>
- -->
-<bean id="osgiShim" class="springtoosgi.portlet.OSGiShim" depends-on="defaultBundleContextFunction">
-<constructor-arg index="0" ref="defaultBundleContextFunction" />
-</bean>
-
-<!-- <bean id="osgiShim" class="springtoosgi.portlet.OSGiShim" />
- -->
-<bean name="makeService" factory-method="registerService" factory-bean="osgiShim" depends-on="adminPortalAppContextUtils">
-		<constructor-arg index="0" ref="adminPortalAppContextUtils" />
-	</bean>
- <bean id="defaultBundleContextFunction" class="springtoosgi.portlet.DefaultBundleContextFunction" />
-
+	
 </beans>

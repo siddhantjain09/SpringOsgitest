@@ -1,10 +1,77 @@
 <?xml version="1.0"?>
 
+
 <beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
 	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+		
 >
 	<context:component-scan base-package="test.comp.**" />
+	
+	
+    <bean id="adminPortalAppContextUtils" class="springtoosgi.portlet.AdminPortalHookContextUtils" />
+	
+	
+	
+     <bean id="adminPortalHookAppConfigBuilder"
+		class="org.apache.commons.configuration.DefaultConfigurationBuilder">
+		<property name="fileName">
+			<value>config/fi-app-config.xml</value>
+		</property>
+		<property name="attributeSplittingDisabled">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<bean id="adminPortalHookAppConfig"
+		class="org.apache.commons.configuration.HierarchicalConfiguration"
+		factory-bean="adminPortalHookAppConfigBuilder"
+		factory-method="getConfiguration">
+	</bean>
+	
+	
+	
+		<bean id="SpringBeansToOSGiServices" class="springtoosgi.portlet.BeanToOSGiServiceFactory" />
+
+	<!-- Getting UserLocalService OSGi service as a bean using the factory -->
+	<bean id="OSGiServiceBeanFactory" class="springtoosgi.portlet.OSGiServiceToBeanFactory" />
+	
+	<!-- Getting UserLocalService OSGi service as a bean using the factory -->
+<!-- 	<bean id="someServiceLocalService" factory-method="getService" factory-bean="OSGiServiceBeanFactory">
+		<constructor-arg index="0" value="test.service.in.spring.service.someServiceLocalService">
+			
+        
+				
+		</constructor-arg>
+			Optionally: a filter string
+		<constructor-arg index="1" value="(foo=bar)" />
+	</bean> -->
+
+	<!-- Making a bean into a service for use by other bundles in OSGi -->
+	<bean factory-method="makeService" factory-bean="SpringBeansToOSGiServices">
+		<!-- A bean to make into a service -->
+		<constructor-arg index="0" ref="adminPortalHookAppConfig" />
+		<!-- Optionally: The list of service types to register the bean as (classNames). If not used, the set of interfaces will be used. -->
+		<constructor-arg index="1">
+			<util:list>
+				<value>org.apache.commons.configuration.HierarchicalConfiguration</value>
+			</util:list>
+		</constructor-arg>
+		<!-- Optionally: A map of service properties. -->
+		<constructor-arg index="2">
+			<util:map>
+				<entry key="foo" value="bar" />
+			</util:map>
+		</constructor-arg>
+	</bean>
 </beans>
