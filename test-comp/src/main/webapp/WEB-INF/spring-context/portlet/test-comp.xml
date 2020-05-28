@@ -47,24 +47,26 @@
 	<bean id="OSGiServiceBeanFactory" class="springtoosgi.portlet.OSGiServiceToBeanFactory" />
 	
 	<!-- Getting UserLocalService OSGi service as a bean using the factory -->
-<!-- 	<bean id="someServiceLocalService" factory-method="getService" factory-bean="OSGiServiceBeanFactory">
-		<constructor-arg index="0" value="test.service.in.spring.service.someServiceLocalService">
-			
-        
-				
-		</constructor-arg>
-			Optionally: a filter string
+	<bean id="userLocalService" factory-method="getService" factory-bean="OSGiServiceBeanFactory">
+		<constructor-arg index="0" value="com.liferay.portal.kernel.service.UserLocalService" />
+		<!-- Optionally: a filter string -->
 		<constructor-arg index="1" value="(foo=bar)" />
-	</bean> -->
+	</bean>
+	
+	 <bean id= "springComponent" class ="org.springframework.util.comparator.BooleanComparator">
 
+               <constructor-arg index="0" type="boolean" value="true" />
+
+                </bean>
+                
 	<!-- Making a bean into a service for use by other bundles in OSGi -->
 	<bean factory-method="makeService" factory-bean="SpringBeansToOSGiServices">
 		<!-- A bean to make into a service -->
-		<constructor-arg index="0" ref="adminPortalHookAppConfig" />
+		<constructor-arg index="0" ref="springComponent" />
 		<!-- Optionally: The list of service types to register the bean as (classNames). If not used, the set of interfaces will be used. -->
 		<constructor-arg index="1">
 			<util:list>
-				<value>org.apache.commons.configuration.HierarchicalConfiguration</value>
+				<value>org.springframework.util.comparator.BooleanComparator</value>
 			</util:list>
 		</constructor-arg>
 		<!-- Optionally: A map of service properties. -->

@@ -13,9 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.ContextStoppedEvent;
 import org.springframework.context.event.EventListener;
 
+
+
+
 public class OSGiServiceToBeanFactory implements AutoCloseable {
 
-	private static final Logger log = LoggerFactory.getLogger(BeanToOSGiServiceFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(OSGiServiceToBeanFactory.class);
 
 	private final BundleContext bundleContext;
 	private final Map<ServiceKey, ServiceTrackerList<?, ?>> trackerLists = new ConcurrentHashMap<>();
@@ -24,26 +27,16 @@ public class OSGiServiceToBeanFactory implements AutoCloseable {
 		bundleContext = org.osgi.framework.FrameworkUtil.getBundle(getClass()).getBundleContext();
 	}
 
-	public <T> T getService(String clazz) {
+	public <T> T getService(Class<T> clazz) {
 		return getService(clazz, "");
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getService(String className, String filterString) {
-		
-		Class clazz;
-		try {
-			clazz = Class.forName(className);
-		
+	public <T> T getService(Class<T> clazz, String filterString) {
 		ServiceTrackerList<?, ?> serviceTrackerList = trackerLists.computeIfAbsent(
-			new ServiceKey(className, filterString), k -> openList(clazz, filterString));
-
+			new ServiceKey(clazz, filterString), k -> openList(clazz, filterString));
+System.out.println(serviceTrackerList.iterator().hasNext());
 		return (T)serviceTrackerList.iterator().next();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-		return null;
 	}
 
 	@EventListener(classes = ContextStoppedEvent.class)
@@ -62,17 +55,17 @@ public class OSGiServiceToBeanFactory implements AutoCloseable {
 		}
 	}
 
-	private static class ServiceKey {
-		private final String className;
+	private static class ServiceKey<X> {
+		private final Class<X> clazz;
 		private final String filterString;
-		public ServiceKey(String className, String filterString) {
+		public ServiceKey(Class<X> clazz, String filterString) {
 			super();
-			this.className = className;
+			this.clazz = clazz;
 			this.filterString = filterString;
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(className, filterString);
+			return Objects.hash(clazz.getName(), filterString);
 		}
 		@Override
 		public boolean equals(Object obj) {
@@ -83,7 +76,7 @@ public class OSGiServiceToBeanFactory implements AutoCloseable {
 				return false;
 			}
 			ServiceKey other = (ServiceKey) obj;
-			return Objects.equals(className, other.className) && Objects.equals(filterString, other.filterString);
+			return Objects.equals(clazz.getName(), other.clazz.getName()) && Objects.equals(filterString, other.filterString);
 		}
 	}
 
