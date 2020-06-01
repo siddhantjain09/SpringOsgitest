@@ -15,9 +15,9 @@ import org.springframework.context.event.EventListener;
 
 
 
-
 public class OSGiServiceToBeanFactory implements AutoCloseable {
 
+	
 	private static final Logger log = LoggerFactory.getLogger(OSGiServiceToBeanFactory.class);
 
 	private final BundleContext bundleContext;
@@ -34,8 +34,8 @@ public class OSGiServiceToBeanFactory implements AutoCloseable {
 	@SuppressWarnings("unchecked")
 	public <T> T getService(Class<T> clazz, String filterString) {
 		ServiceTrackerList<?, ?> serviceTrackerList = trackerLists.computeIfAbsent(
-			new ServiceKey(clazz, filterString), k -> openList(clazz, filterString));
-System.out.println(serviceTrackerList.iterator().hasNext());
+			new ServiceKey(clazz.getName(), filterString), k -> openList(clazz, filterString));
+
 		return (T)serviceTrackerList.iterator().next();
 	}
 
@@ -55,17 +55,17 @@ System.out.println(serviceTrackerList.iterator().hasNext());
 		}
 	}
 
-	private static class ServiceKey<X> {
-		private final Class<X> clazz;
+	private static class ServiceKey {
+		private final String className;
 		private final String filterString;
-		public ServiceKey(Class<X> clazz, String filterString) {
+		public ServiceKey(String className, String filterString) {
 			super();
-			this.clazz = clazz;
+			this.className = className;
 			this.filterString = filterString;
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(clazz.getName(), filterString);
+			return Objects.hash(className, filterString);
 		}
 		@Override
 		public boolean equals(Object obj) {
@@ -76,7 +76,7 @@ System.out.println(serviceTrackerList.iterator().hasNext());
 				return false;
 			}
 			ServiceKey other = (ServiceKey) obj;
-			return Objects.equals(clazz.getName(), other.clazz.getName()) && Objects.equals(filterString, other.filterString);
+			return Objects.equals(className, other.className) && Objects.equals(filterString, other.filterString);
 		}
 	}
 
