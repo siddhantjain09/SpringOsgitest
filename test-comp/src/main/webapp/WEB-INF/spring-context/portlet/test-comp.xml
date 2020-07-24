@@ -21,6 +21,14 @@
 	
     <bean id="adminPortalAppContextUtils" class="springtoosgi.portlet.AdminPortalHookContextUtils" />
 	
+	 <bean id="testBean" class="beanprovider.constants.TestBean" />
+	 
+	 <bean id="conBean" class="beanprovider.constants.ConsumerBean" >
+	 	<constructor-arg index="0" ref="testBean" />
+	 	<constructor-arg index="1" value="10" />
+	 
+	 </bean>
+	
 	
 	
      <bean id="adminPortalHookAppConfigBuilder"
@@ -59,18 +67,18 @@
 	<bean id="OSGiServiceBeanFactory" class="springtoosgi.portlet.OSGiServiceToBeanFactory" />
 	
 	<!-- Getting UserLocalService OSGi service as a bean using the factory -->
-	<bean id="userLocalService" factory-method="getService" factory-bean="OSGiServiceBeanFactory">
+	<bean id="someService" factory-method="getService" factory-bean="OSGiServiceBeanFactory">
 		<constructor-arg index="0" value="test.service.in.spring.service.someServiceLocalService" />
 		</bean>
 
 	<!-- Making a bean into a service for use by other bundles in OSGi -->
 	<bean factory-method="makeService" factory-bean="SpringBeansToOSGiServices">
 		<!-- A bean to make into a service -->
-		<constructor-arg index="0" ref="adminPortalHookAppConfig" />
+		<constructor-arg index="0" ref="conBean" />
 		<!-- Optionally: The list of service types to register the bean as (classNames). If not used, the set of interfaces will be used. -->
 		<constructor-arg index="1">
 			<util:list>
-				<value>org.apache.commons.configuration.HierarchicalConfiguration</value>
+				<value>beanprovider.constants.Testsrvc</value>
 			</util:list>
 		</constructor-arg>
 		<!-- Optionally: A map of service properties. -->

@@ -65,9 +65,17 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>beanprovider</groupId>
+			<artifactId>beanprovider</artifactId>
+			<version>1.0.0</version>
+		<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>test.service.in.spring</groupId>
 			<artifactId>test-service-in-spring-api</artifactId>
 			<version>1.0.0</version>
+			 <scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.liferay/com.liferay.osgi.service.tracker.collections -->
 <dependency>
